@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the main image and the template image
-main_image = cv2.imread('speed_photos/UK_40mph.jpg')
+main_image = cv2.imread('speed_photos/UK_20mph.jpg')
 template = cv2.imread('Template speeds/20.jpeg')
 """
 # Convert images to grayscale
@@ -53,23 +53,24 @@ def preprocess(image):
     K = 20
     kernel = np.ones((K, K), np.uint8)
     # Perform dilation on the image
-    n = 10
-    size = image.shape[:2]
-    width = size[0]
-    height = size[1]
-    new_width = 2*n*K + width
-    new_height = 2*n*K + height
-    image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+    n = 80
+
+    left = 2*n*K
+    right = 2*n*K
+    top = 2*n*K
+    bottom = 2*n*K
+    #image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+    Shiftimg = cv2.copyMakeBorder(image, top, bottom, left, right, cv2.BORDER_CONSTANT, value=(0, 0, 255))
 
     # Define the boundaries for red color in BGR format
     lower_red = np.array([20, 0, 100], dtype=np.uint8)
     upper_red = np.array([100, 100, 255], dtype=np.uint8)
 
     # Create a mask to detect red color within the specified boundaries
-    mask = cv2.inRange(image, lower_red, upper_red)
+    mask = cv2.inRange(Shiftimg, lower_red, upper_red)
 
     # Apply the mask to extract only the red-colored region
-    red_region = cv2.bitwise_and(image, image, mask=mask)
+    red_region = cv2.bitwise_and(Shiftimg, Shiftimg, mask=mask)
 
 
     # Define the kernel size and standard deviation
@@ -92,27 +93,25 @@ def preprocess(image):
 
     img_dil2 = cv2.dilate(img_dilation, kernel, iterations=n)
     # Perform erosion on the image
-    img_er2 = cv2.erode(img_dil2, kernel, iterations=n-5)
+    img_er2 = cv2.erode(img_dil2, kernel, iterations=n)
 
-    img_er2 = cv2.resize(img_er2, (width, height), interpolation=cv2.INTER_LINEAR)
-
+    img_er2 = img_er2[top:img_er2.shape[0]-bottom, left:img_er2.shape[1]-right]
+    img_er2 = cv2.copyMakeBorder(img_er2, 0, 80, 0, 80, cv2.BORDER_CONSTANT, value=(0, 0, 255))
+    img_er2 = img_er2[80:img_er2.shape[0], 80:img_er2.shape[1]]
     return img_er2
 
 extract_img = preprocess(main_image)
 # Display or further analyze the extracted red-colored region
-def white_dilate(image):
+extract_img = cv2.cvtColor(extract_img, cv2.COLOR_BGR2GRAY)
+ret, mask = cv2.threshold(extract_img, 50, 255, cv2.THRESH_BINARY)
 
-    return img_erosion
-
-
-# Use the boundary information to extract the region from the original image
-extracted_region = cv2.bitwise_and(main_image, extract_img)
-
-
+ 
+# Now black-out the area of logo in ROI
+extracted_region = cv2.bitwise_and(main_image,main_image,mask = mask)
 
 
 
 cv2.imshow('Dilation', extracted_region)
-cv2.imshow('Dilation', extract_img)
+#cv2.imshow('Dilation', extract_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
