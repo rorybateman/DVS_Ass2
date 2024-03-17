@@ -91,13 +91,15 @@ def preprocess(image):
     
 
 
-    img_dil2 = cv2.dilate(img_dilation, kernel, iterations=n)
+    #img_dil2 = cv2.dilate(img_dilation, kernel, iterations=n)
     # Perform erosion on the image
-    img_er2 = cv2.erode(img_dil2, kernel, iterations=n)
+    #img_er2 = cv2.erode(img_dil2, kernel, iterations=n)
 
+    img_er2 = img_dilation
+    
     img_er2 = img_er2[top:img_er2.shape[0]-bottom, left:img_er2.shape[1]-right]
-    img_er2 = cv2.copyMakeBorder(img_er2, 0, 80, 0, 80, cv2.BORDER_CONSTANT, value=(0, 0, 255))
-    img_er2 = img_er2[80:img_er2.shape[0], 80:img_er2.shape[1]]
+    #img_er2 = cv2.copyMakeBorder(img_er2, 0, 80, 0, 80, cv2.BORDER_CONSTANT, value=(0, 0, 255))
+    #img_er2 = img_er2[80:img_er2.shape[0], 80:img_er2.shape[1]]
     return img_er2
 
 extract_img = preprocess(main_image)
@@ -109,9 +111,11 @@ ret, mask = cv2.threshold(extract_img, 50, 255, cv2.THRESH_BINARY)
 # Now black-out the area of logo in ROI
 extracted_region = cv2.bitwise_and(main_image,main_image,mask = mask)
 
-
+cv2.imwrite('extracted_region.jpg', extracted_region)
 
 cv2.imshow('Dilation', extracted_region)
 #cv2.imshow('Dilation', extract_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+
