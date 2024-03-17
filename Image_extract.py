@@ -33,7 +33,7 @@ text = 'distance:' + str(round(distance,3)) + 'm, ' + 'position:' + str(x+w/2) +
 font = cv2.FONT_HERSHEY_SIMPLEX
 color = (0, 0, 0)  # BGR color format
 position = (50, 50)
-thickness = 2
+thickness = 3
 
 # Add text to the image
 cv2.putText(cropped_image, text, position, font, 1, color, thickness, cv2.LINE_4)
