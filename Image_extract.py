@@ -14,10 +14,28 @@ contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 # Get the bounding box of the non-black regions
 x, y, w, h = cv2.boundingRect(contours[0])
 
+
 # Crop the image to focus on non-black pixels
 cropped_image = main_image[y:y+h, x:x+w]
+
+NoOfpixels = (h+w)/2 # averaging the diiameter of the object
+
+sizeofpixel = 0.0001  # in meters
+object_size_in_image= NoOfpixels*sizeofpixel
+real_size = 0.6  # in meters
+focal_length = 0.00304  # in meters
 
 distance = real_size * focal_length / object_size_in_image
 
 
-cv2.imwrite('cropped.jpg', cropped_image)
+# Define the text, font, color, and position
+text = 'distance:' + str(round(distance,3)) + 'm, ' + 'position:' + str(x+w/2) + ', ' + str(y +h/2)
+font = cv2.FONT_HERSHEY_SIMPLEX
+color = (0, 0, 0)  # BGR color format
+position = (50, 50)
+thickness = 2
+
+# Add text to the image
+cv2.putText(cropped_image, text, position, font, 1, color, thickness, cv2.LINE_4)
+
+cv2.imwrite('cropped.png', cropped_image)
