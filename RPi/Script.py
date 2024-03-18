@@ -1,33 +1,35 @@
 from flask import Flask, render_template, Response, request
-from picamera import PiCamera
-from io import BytesIO
+from picamera2 import Picamera2
+import io
 import time
 
 app = Flask(__name__)
-camera = PiCamera()
-camera.resolution = (640, 480)  # Set your desired resolution
+picamera2 = Picamera2()
+preview_config = picamera2.create_preview_configuration(main={"size": (640, 480)})
+picamera2.configure(preview_config)
+picamera2.start()
 
-def gen(camera):
+def generate_frame(picamera2):
     """Video streaming generator function."""
-    stream = BytesIO()
-    for _ in camera.capture_continuous(stream, 'jpeg', use_video_port=True):
-        stream.seek(0)
-        frame = stream.read()
+    while True:
+        frame = picamera2.capture_array()
+        img_io = io.BytesIO()
+        img_io.seek(0)
+        img_io.write(frame)
+        img_io.seek(0)
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-        stream.seek(0)
-        stream.truncate()
+               b'Content-Type: image/jpeg\r\n\r\n' + img_io.getvalue() + b'\r\n')
 
 @app.route('/video_feed')
 def video_feed():
     """Route to stream video."""
-    return Response(gen(camera),
+    return Response(generate_frame(picamera2),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/take_picture')
 def take_picture():
     """Route to take a picture."""
-    camera.capture('/home/pi/Desktop/image.jpg')  # Adjust the path as needed
+    picamera2.capture_file('/home/pi/Desktop/image.jpg')
     return ('', 204)
 
 @app.route('/')
