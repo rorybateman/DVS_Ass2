@@ -9,16 +9,21 @@ preview_config = picamera2.create_preview_configuration(main={"size": (640, 480)
 picamera2.configure(preview_config)
 picamera2.start()
 
+import numpy as np
+
 def generate_frame(picamera2):
     """Video streaming generator function."""
     while True:
+        # Capture the image in NumPy format
         frame = picamera2.capture_array()
+        # Convert the NumPy array to a JPEG image in memory
         img_io = io.BytesIO()
-        img_io.seek(0)
-        img_io.write(frame)
+        pil_image = Image.fromarray(frame.astype('uint8'), 'RGB')  # Create a PIL Image from the NumPy array
+        pil_image.save(img_io, 'JPEG')  # Save the PIL image as JPEG to the BytesIO buffer
         img_io.seek(0)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + img_io.getvalue() + b'\r\n')
+
 
 @app.route('/video_feed')
 def video_feed():
