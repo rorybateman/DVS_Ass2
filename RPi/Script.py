@@ -3,6 +3,7 @@ from picamera2 import Picamera2
 import io
 import time
 from PIL import Image
+import cv2
 
 app = Flask(__name__)
 picamera2 = Picamera2()
@@ -17,14 +18,20 @@ def generate_frame(picamera2):
     while True:
         # Capture the image in NumPy format
         frame = picamera2.capture_array()
-        # Convert the NumPy array to a JPEG image in memory
+        # Ensure the frame is in the right format (RGB, uint8)
+        if frame.dtype != np.uint8:
+            frame = frame.astype(np.uint8)
+        # Convert from YUV to RGB if needed (This is just an example. Actual conversion depends on the camera output)
+        if picamera2.camera_properties['PixelFormat'] == 'YUV420':
+            frame = cv2.cvtColor(frame, cv2.COLOR_YUV2RGB)
+        # Convert the NumPy array to a PIL Image
+        pil_image = Image.fromarray(frame, 'RGB')  # Create a PIL Image from the NumPy array
+        # Convert to JPEG
         img_io = io.BytesIO()
-        pil_image = Image.fromarray(frame.astype('uint8'), 'RGB')  # Create a PIL Image from the NumPy array
-        pil_image.save(img_io, 'JPEG')  # Save the PIL image as JPEG to the BytesIO buffer
+        pil_image.save(img_io, 'JPEG', quality=70)  # Adjust quality as needed
         img_io.seek(0)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + img_io.getvalue() + b'\r\n')
-
 
 @app.route('/video_feed')
 def video_feed():
