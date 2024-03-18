@@ -2,6 +2,7 @@ from flask import Flask, render_template, Response, request
 from picamera2 import Picamera2
 import io
 import time
+from PIL import Image
 
 app = Flask(__name__)
 picamera2 = Picamera2()
