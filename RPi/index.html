@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Raspberry Pi Camera Stream</title>
+</head>
+<body>
+    <h1>Raspberry Pi Camera Stream</h1>
+    <img src="{{ url_for('video_feed') }}" alt="Video stream">
+    <form action="/take_picture" method="get">
+        <button type="submit">Take Picture</button>
+    </form>
+</body>
+</html>
