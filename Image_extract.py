@@ -27,11 +27,19 @@ focal_length = 0.00304  # in meters
 
 distance = real_size * focal_length / object_size_in_image
 
+from Signdetect import preprocess
+
+red_mask = preprocess(cropped_image)
+
+cropped_nored = cv2.bitwise_not(cropped_image,cropped_image,mask = red_mask)
+cv2.imwrite('cropped_nored.png', cropped_nored)
+
+
 
 # Define the text, font, color, and position
 text = 'distance:' + str(round(distance,3)) + 'm, ' + 'position:' + str(x+w/2) + ', ' + str(y +h/2)
 font = cv2.FONT_HERSHEY_SIMPLEX
-color = (0, 0, 0)  # BGR color format
+color = (150, 150, 250)  # BGR color format
 position = (50, 50)
 thickness = 3
 

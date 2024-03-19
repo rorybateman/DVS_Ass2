@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 # Load the main image and the template image
 main_image = cv2.imread('speed_photos/UK_20mph.jpg')
 
+
+
 """Getting original mask"""
 def preprocess(image):
 
@@ -46,7 +48,7 @@ mask = preprocess(main_image)
 
 
 # Now black-out the area
-extracted_region = cv2.bitwise_and(main_image,main_image,mask = mask)
+extracted_region = cv2.bitwise_xor(main_image,main_image,mask = mask)
 
 cv2.imwrite('extracted_region.png', extracted_region)
 
