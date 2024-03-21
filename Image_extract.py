@@ -29,11 +29,16 @@ distance = real_size * focal_length / object_size_in_image
 
 from Signdetect import preprocess
 
-red_mask = preprocess(cropped_image)
+def number_extract(image,n):
+    lower_black = np.array([0, 0, 0], dtype=np.uint8)
+    upper_black = np.array([75, 75, 75], dtype=np.uint8)
+    mask = preprocess(image,n,lower_black, upper_black,10)
+    _, bin_mask = cv2.threshold(mask, 150, 255, cv2.THRESH_BINARY)
+    #bin_mask = cv2.bitwise_not(bin_mask)
+    #cropped_nored = cv2.bitwise_and(cropped_image,cropped_image,mask = bin_mask)
+    return bin_mask
 
-cropped_nored = cv2.bitwise_not(cropped_image,cropped_image,mask = red_mask)
-cv2.imwrite('cropped_nored.png', cropped_nored)
-
+cv2.imwrite('cropped_no_text.png', cropped_image)
 
 
 # Define the text, font, color, and position

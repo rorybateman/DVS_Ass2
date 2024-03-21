@@ -1,35 +1,32 @@
 import cv2
 import numpy as np
 
+from skimage.metrics import structural_similarity as ssim
+import matplotlib.pyplot as plt
+
+from Image_extract import number_extract
+
 template = [20,30,40,50,60]
 
 # Load the images
-#scene = cv2.imread('speed_photos/UK_20mph.jpg')
-scene = cv2.imread('cropped_nored.png')
+cropped_image = cv2.imread('cropped_no_text.png')
+
+scene = number_extract(cropped_image,4)
+# All the 6 methods for comparison in a list
+methods = ['cv2.TM_CCOEFF', 'cv2.TM_CCOEFF_NORMED', 'cv2.TM_CCORR',
+ 'cv2.TM_CCORR_NORMED', 'cv2.TM_SQDIFF', 'cv2.TM_SQDIFF_NORMED']
 
 
-# Convert images to grayscale
-pile_gray = cv2.cvtColor(scene, cv2.COLOR_BGR2GRAY)
+
 for i in range(len(template)):
     print(str(template[i]))
     template_speed = cv2.imread('Template_speeds/'+str(template[i]) + '.jpeg')
-    case_gray = cv2.cvtColor(template_speed, cv2.COLOR_BGR2GRAY)
+    template_filtered = number_extract(template_speed,1)
+    cv2.imwrite('Template_speeds/'+str(template[i]) + 'filtered.png', template_filtered)
 
     # Apply template matching
-    result = cv2.matchTemplate(pile_gray, case_gray, cv2.TM_CCOEFF_NORMED)
+    result = cv2.matchTemplate(scene, template_filtered, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
     print('max val '+ str(max_val))
     print('min val '+ str(min_val))
 
-
-# Get the coordinates of the matched region
-#top_left = max_loc
-#bottom_right = (top_left[0] + template_speed.shape[1], top_left[1] + template_speed.shape[0])
-
-# Draw a rectangle around the matched region
-#cv2.rectangle(scene, top_left, bottom_right, (0, 255, 0), 3)
-
-# Display the result
-#cv2.imshow('Result', scene)
-cv2.waitKey(0)
-cv2.destroyAllWindows()

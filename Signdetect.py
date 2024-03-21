@@ -8,14 +8,10 @@ main_image = cv2.imread('speed_photos/UK_20mph.jpg')
 
 
 """Getting original mask"""
-def preprocess(image):
-
-    # Define the boundaries for red color in BGR format
-    lower_red = np.array([20, 0, 100], dtype=np.uint8)
-    upper_red = np.array([100, 100, 255], dtype=np.uint8)
+def preprocess(image,it,lower,upper,ks):
 
     # Create a mask to detect red color within the specified boundaries
-    mask = cv2.inRange(image, lower_red, upper_red)
+    mask = cv2.inRange(image, lower, upper)
 
     # Apply the mask to extract only the red-colored region
     red_region = cv2.bitwise_and(image, image, mask=mask)
@@ -24,7 +20,7 @@ def preprocess(image):
 
     # Define the kernel size and standard deviation
     ksize = (9, 9)  # Kernel size (has to be positive and odd) for Gaussian blur
-    kernal_size = 20  # Kernel size (has to be positive and odd) for the erosion and dilation
+    kernal_size = ks  # Kernel size (has to be positive and odd) for the erosion and dilation
     sigmaX = 0  # Standard deviation in X direction
 
     # Apply Gaussian blur
@@ -35,20 +31,22 @@ def preprocess(image):
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (kernal_size,kernal_size))
 
     # Perform erosion on the image
-    img_erosion = cv2.erode(blurred_image, kernel, iterations=2)
+    img_erosion = cv2.erode(blurred_image, kernel, iterations=it)
 
     # Perform dilation on the image
-    img_dilation = cv2.dilate(img_erosion, kernel, iterations=2)
+    img_dilation = cv2.dilate(img_erosion, kernel, iterations=it)
 
 
     return img_dilation
 
-
-mask = preprocess(main_image)
+# Define the boundaries for red color in BGR format
+lower_red = np.array([20, 0, 100], dtype=np.uint8)
+upper_red = np.array([100, 100, 255], dtype=np.uint8)
+mask = preprocess(main_image,2,lower_red, upper_red,20)
 
 
 # Now black-out the area
-extracted_region = cv2.bitwise_xor(main_image,main_image,mask = mask)
+extracted_region = cv2.bitwise_and(main_image,main_image,mask = mask)
 
 cv2.imwrite('extracted_region.png', extracted_region)
 
