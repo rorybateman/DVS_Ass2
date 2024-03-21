@@ -2,28 +2,24 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 # Load the main image and the template image
-from Signdetect import preprocess, mask_aply, signextract
+from Signdetect import preprocess, mask_aply, signextract, find_border_indices
 
 def image_extract(image,mask):
     ''' returns a cropped image and its position on the image from which it was originally cropped'''
     # Convert the image to grayscale
-    gray_image = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
-    # plot the image
-    plt.imshow(gray_image, cmap='gray')
-    plt.show()
-
+    #gray_image = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
     # Create a binary mask for non-black pixels
-    _, bin_mask = cv2.threshold(gray_image, 1, 255, cv2.THRESH_BINARY)
+    #_, bin_mask = cv2.threshold(gray_image, 1, 255, cv2.THRESH_BINARY)
     # Find contours of non-black regions
-    contours, _ = cv2.findContours(bin_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    
+    b,t,l,r = find_border_indices(mask)
     # Check if contours were found
-    if not contours:
-        print("No contours found. Check the mask image or preprocessing steps.")
-        #return None, None, None, None, None  # Return None or appropriate defaults
-
     # Get the bounding box of the non-black regions
-    x, y, w, h = cv2.boundingRect(contours[0])
+    x = t[1]
+    w = b[1]-t[1]
+    y = l[0]
+    h = r[0]-l[0]
+    print("b,t,l,r")
+    print(b,t,l,r)
     # Crop the image to focus on non-black pixels
     cropped_image = image[y:y+h, x:x+w]
     return cropped_image,x,y,w,h
@@ -42,27 +38,39 @@ def distance_calc(x,y,h,w):
 def number_extract(image,n):
     '''converts cropped image to binary image just showing the numbers'''
     lower_black = np.array([0, 0, 0], dtype=np.uint8)
-    upper_black = np.array([75, 75, 75], dtype=np.uint8)
+    upper_black = np.array([120, 120, 120], dtype=np.uint8)
 
-    mask = preprocess(image,n,lower_black, upper_black,10)
-    _, bin_mask = cv2.threshold(mask, 150, 255, cv2.THRESH_BINARY)
+    mask = preprocess(image,n,lower_black, upper_black,2)
+    _, bin_mask = cv2.threshold(mask, 20, 255, cv2.THRESH_BINARY)
     return bin_mask
 
 def img_num(imgpath):
     '''returns the cropped image with only the numbers in it'''
     extracted_region = signextract(imgpath) # returns the red region
-
     source_image = cv2.imread(imgpath)
+    plt.title("extracted_region", fontsize=16)
+    plt.imshow(extracted_region)
+    plt.show()
 
     cropped_image,x,y,w,h = image_extract(source_image,extracted_region)
-
-    pure_number = number_extract(cropped_image,4)
+    plt.title("cropped_image", fontsize=16)
+    plt.imshow(cropped_image)
+    plt.show()
+    pure_number = number_extract(cropped_image,1)
+    #plt.title("pure_number", fontsize=16)
+    #plt.imshow(pure_number)
+    #plt.show()
     return pure_number
 
 if __name__ == '__main__':
     img_path = 'speed_photos/UK_20mph.jpg'
 
-    cv2.imwrite('cropped_no_text.png',img_num(img_path))
+    #cv2.imwrite('cropped_no_text.png',img_num(img_path))
+
+#img_path = 'plenty2.jpg'
+#img_num(img_path)
+
+
 
 
 # Define the text, font, color, and position
