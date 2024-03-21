@@ -61,12 +61,13 @@ def signextract(imgpath):
     # plt.imshow(cv2.cvtColor(main_image, cv2.COLOR_BGR2RGB))
     # plt.show()
 
-    # # Define the boundaries for red color in BGR format
-    # lower_red = np.array([0, 0, 130], dtype=np.uint8)
-    # upper_red = np.array([255, 120, 255], dtype=np.uint8)
-
-    lower_red = np.array([0, 0, 110], dtype=np.uint8)
+    # Define the boundaries for red color in BGR format
+    lower_red = np.array([0, 0, 130], dtype=np.uint8)
     upper_red = np.array([255, 120, 255], dtype=np.uint8)
+
+    # too sensitive
+    # lower_red = np.array([0, 0, 110], dtype=np.uint8)
+    # upper_red = np.array([255, 120, 255], dtype=np.uint8)
 
     # Create a mask to detect red color within the specified boundaries
     red_mask = preprocess(main_image,8,lower_red, upper_red,5) 

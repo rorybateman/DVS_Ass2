@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from Image_extract import number_extract, img_num
 import pandas as pd
 
-img_path = 'speed_photos/UK_40mph.jpg'
+img_path = 'speed_photos/UK_20mph.jpg'
 templates = [20, 30, 40, 50, 60]
 
 query_img = img_num(img_path)  # Image from which we want to match features
