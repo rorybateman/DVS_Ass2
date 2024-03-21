@@ -1,12 +1,6 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-
-# Load the main image and the template image
-main_image = cv2.imread('speed_photos/UK_20mph.jpg')
-
-
-
 """Getting original mask"""
 def preprocess(image,it,lower,upper,ks):
 
@@ -39,14 +33,23 @@ def preprocess(image,it,lower,upper,ks):
 
     return img_dilation
 
-# Define the boundaries for red color in BGR format
-lower_red = np.array([20, 0, 100], dtype=np.uint8)
-upper_red = np.array([100, 100, 255], dtype=np.uint8)
-mask = preprocess(main_image,2,lower_red, upper_red,20)
+def mask_aply(image,mask):
+    extracted_region = cv2.bitwise_and(image,image,mask = mask)
+    return extracted_region
+# Load the main image and the template image
+
+def signextract(imgpath):
+    main_image = cv2.imread(imgpath)
+    # Define the boundaries for red color in BGR format
+    lower_red = np.array([0, 0, 130], dtype=np.uint8)
+    upper_red = np.array([255, 120, 255], dtype=np.uint8)
+    red_mask = preprocess(main_image,8,lower_red, upper_red,5)
+    #imag ebut only the red regionn remains
+    red_region = mask_aply(main_image,red_mask)
+    red_mask = preprocess(red_region,8,lower_red, upper_red,10)
+    red_region = mask_aply(main_image,red_mask)
+    return red_region
 
 
-# Now black-out the area
-extracted_region = cv2.bitwise_and(main_image,main_image,mask = mask)
-
-cv2.imwrite('extracted_region.png', extracted_region)
+cv2.imwrite('extracted_region.png', signextract('speed_photos/UK_20mph.jpg'))
 
