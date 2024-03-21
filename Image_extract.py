@@ -5,8 +5,8 @@ from Signdetect import preprocess, mask_aply, signextract
 
 img_path = 'speed_photos/UK_20mph.jpg'
 
-''' returns a cropped image and its position on the image from which it was originally cropped'''
 def image_extract(image,mask):
+    ''' returns a cropped image and its position on the image from which it was originally cropped'''
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
     # Create a binary mask for non-black pixels
@@ -21,8 +21,9 @@ def image_extract(image,mask):
     return cropped_image,x,y,w,h
 
 def distance_calc(x,y,h,w):
+    '''returns the distance of the object from the camera and its coardinates'''
     coardinates = [x+w/2,y+h/2]
-    NoOfpixels = (h+w)/2 # averaging the diiameter of the object
+    NoOfpixels = (h+w)/2 # averaging the diameter of the object
     sizeofpixel = 0.0001  # in meters
     object_size_in_image= NoOfpixels*sizeofpixel
     real_size = 0.6  # in meters
@@ -30,16 +31,18 @@ def distance_calc(x,y,h,w):
     distance = real_size * focal_length / object_size_in_image
     return distance, coardinates
 
-'''converts cropped image to binary image just shwoing the numbers'''
 def number_extract(image,n):
+    '''converts cropped image to binary image just showing the numbers'''
     lower_black = np.array([0, 0, 0], dtype=np.uint8)
     upper_black = np.array([75, 75, 75], dtype=np.uint8)
+    
     mask = preprocess(image,n,lower_black, upper_black,10)
     _, bin_mask = cv2.threshold(mask, 150, 255, cv2.THRESH_BINARY)
     return bin_mask
 
 def img_num(imgpath):
-    extracted_region = signextract(imgpath)
+    '''returns the cropped image with only the numbers in it'''
+    extracted_region = signextract(imgpath) # returns the red region
 
     source_image = cv2.imread(imgpath)
 
