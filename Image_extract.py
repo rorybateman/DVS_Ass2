@@ -14,6 +14,11 @@ def image_extract(image,mask):
     # Find contours of non-black regions
     contours, _ = cv2.findContours(bin_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
+    # Check if contours were found
+    if not contours:
+        print("No contours found. Check the mask image or preprocessing steps.")
+        return None, None, None, None, None  # Return None or appropriate defaults
+
     # Get the bounding box of the non-black regions
     x, y, w, h = cv2.boundingRect(contours[0])
     # Crop the image to focus on non-black pixels
@@ -35,7 +40,7 @@ def number_extract(image,n):
     '''converts cropped image to binary image just showing the numbers'''
     lower_black = np.array([0, 0, 0], dtype=np.uint8)
     upper_black = np.array([75, 75, 75], dtype=np.uint8)
-    
+
     mask = preprocess(image,n,lower_black, upper_black,10)
     _, bin_mask = cv2.threshold(mask, 150, 255, cv2.THRESH_BINARY)
     return bin_mask
