@@ -1,14 +1,17 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 # Load the main image and the template image
 from Signdetect import preprocess, mask_aply, signextract
-
-img_path = 'speed_photos/UK_20mph.jpg'
 
 def image_extract(image,mask):
     ''' returns a cropped image and its position on the image from which it was originally cropped'''
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
+    # plot the image
+    plt.imshow(gray_image, cmap='gray')
+    plt.show()
+
     # Create a binary mask for non-black pixels
     _, bin_mask = cv2.threshold(gray_image, 1, 255, cv2.THRESH_BINARY)
     # Find contours of non-black regions
@@ -17,7 +20,7 @@ def image_extract(image,mask):
     # Check if contours were found
     if not contours:
         print("No contours found. Check the mask image or preprocessing steps.")
-        return None, None, None, None, None  # Return None or appropriate defaults
+        #return None, None, None, None, None  # Return None or appropriate defaults
 
     # Get the bounding box of the non-black regions
     x, y, w, h = cv2.boundingRect(contours[0])
@@ -56,8 +59,10 @@ def img_num(imgpath):
     pure_number = number_extract(cropped_image,4)
     return pure_number
 
+if __name__ == '__main__':
+    img_path = 'speed_photos/UK_20mph.jpg'
 
-cv2.imwrite('cropped_no_text.png',img_num(img_path))
+    cv2.imwrite('cropped_no_text.png',img_num(img_path))
 
 
 # Define the text, font, color, and position

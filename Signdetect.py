@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+
 """Getting original mask"""
 def preprocess(image,it,lower,upper,ks):
     '''
@@ -9,6 +10,11 @@ def preprocess(image,it,lower,upper,ks):
     
     # Create a mask to detect red color within the specified boundaries
     mask = cv2.inRange(image, lower, upper)
+    
+    # DEBUGGING: Display the mask
+    plt.imshow(mask, cmap='gray')
+    plt.show()
+
 
     # Apply the mask to extract only the red-colored region
     red_region = cv2.bitwise_and(image, image, mask=mask)
@@ -50,8 +56,16 @@ def signextract(imgpath):
     - red_region (np.array): An image array with only the extracted red regions visable, rest of the image masked out
     '''
     main_image = cv2.imread(imgpath)
-    # Define the boundaries for red color in BGR format
-    lower_red = np.array([0, 0, 130], dtype=np.uint8)
+
+    # DEBUGGING: Display the main image
+    # plt.imshow(cv2.cvtColor(main_image, cv2.COLOR_BGR2RGB))
+    # plt.show()
+
+    # # Define the boundaries for red color in BGR format
+    # lower_red = np.array([0, 0, 130], dtype=np.uint8)
+    # upper_red = np.array([255, 120, 255], dtype=np.uint8)
+
+    lower_red = np.array([0, 0, 110], dtype=np.uint8)
     upper_red = np.array([255, 120, 255], dtype=np.uint8)
 
     # Create a mask to detect red color within the specified boundaries
@@ -63,6 +77,6 @@ def signextract(imgpath):
 
     return red_region 
 
-
-cv2.imwrite('extracted_region.png', signextract('speed_photos/UK_20mph.jpg'))
+if __name__ == '__main__':
+    cv2.imwrite('extracted_region.png', signextract('speed_photos/UK_20mph.jpg'))
 
