@@ -38,5 +38,5 @@ My main contribution to the final project outcome was implementing feature match
 Also early prototyping with sign extraction and trying to implement on a raspberry pi for portable testing. 
 
 ### Rory
-- Did everything else!
+- Responsible for thresholding and morphological analysis
 
