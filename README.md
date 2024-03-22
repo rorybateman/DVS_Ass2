@@ -1,6 +1,6 @@
 # DVS_Ass2
 
-# Project Description and Achievement
+## Project Description and Achievement
 System designed for real time recognition of speed limit signs using a camera. 
 
 ### Image capture
@@ -15,17 +15,26 @@ Once a potential speed limit sign is extracted from the image, the system furthe
 ### Feature Matching and Identification
 The processed image, now focused on the numbers of the speed limit sign, is compared against a collection of template images representing various speed limits (e.g., 20, 30, 40, 50, 60, 70 mph). Using feature detection and matching algorithms (such as SIFT, ORB, etc.), the system identifies the template that most closely matches the extracted sign, thus determining the speed limit depicted on the sign.
 
-# 
-Sign
+## Instructions to run the application
 
-# Instructions to run the application
-
-# run imgcap.py
+### run imgcap.py
 - (Print off speed limit sign)
 - CTRL+C to stop the program
 
-# Evidence of application working
+## Evidence of application working
 (Link to video)
 
-# Evaluation
+## Evaluation
+- Things to improve
+- Thresholding
+
+
+## Personal Statements
+
+### Thomas
+My main contribution to the final project outcome was implementing feature matching and Identification. Initially I tried to use template matching as all road signs are standardised but this wasn't suitable as the road signs are all at different angles, scales and different lighting conditions.
+Also early prototyping with sign extraction and trying to implement on a raspberry pi for portable testing. 
+
+### Rory
+
 
