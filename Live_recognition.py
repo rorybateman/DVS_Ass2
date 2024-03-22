@@ -4,6 +4,7 @@ from skimage.metrics import structural_similarity as ssim
 import matplotlib.pyplot as plt
 from Image_extract import number_extract, img_num
 import pandas as pd
+
 def live(img_path):
     #img_path = 'new test.png'
     query_img = 0
