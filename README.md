@@ -1,4 +1,6 @@
-# DVS_Ass2
+### DVS_Ass2
+# Design of Visual Systems - Speed Sign Detection Project
+
 
 ## Project Description and Achievement
 System designed for real time recognition of speed limit signs using a camera. 
