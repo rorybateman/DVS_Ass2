@@ -57,6 +57,7 @@ def img_num(imgpath):
     plt.imshow(cropped_image)
     plt.show()
     pure_number = number_extract(cropped_image,1)
+    pure_number = cv2.bitwise_not(pure_number)
     #plt.title("pure_number", fontsize=16)
     #plt.imshow(pure_number)
     #plt.show()
@@ -67,9 +68,10 @@ if __name__ == '__main__':
 
     #cv2.imwrite('cropped_no_text.png',img_num(img_path))
 
-#img_path = 'plenty2.jpg'
-#img_num(img_path)
-
+img_path = 'plenty.png'
+y = img_num(img_path)
+# Save the captured frame as an image file
+cv2.imwrite(f"70filtered.png", y)
 
 
 
