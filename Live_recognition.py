@@ -9,7 +9,7 @@ def live(img_path):
     query_img = 0
     #img_path = 'captured_image.jpg'
 
-    templates = [20, 30, 40, 50, 60,70]
+    templates = [20, 30, 40, 50]
     while type(query_img) == int:
         try:
             query_img = img_num(img_path)  # Image from which we want to match features

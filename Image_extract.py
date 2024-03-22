@@ -68,10 +68,10 @@ if __name__ == '__main__':
 
     #cv2.imwrite('cropped_no_text.png',img_num(img_path))
 
-img_path = 'plenty.png'
-y = img_num(img_path)
+#img_path = 'Template_speeds/60.jpg'
+#y = img_num(img_path)
 # Save the captured frame as an image file
-cv2.imwrite(f"70filtered.png", y)
+#cv2.imwrite(f"60filtered.png", y)
 
 
 
