@@ -15,26 +15,27 @@ Once a potential speed limit sign is extracted from the image, the system furthe
 ### Feature Matching and Identification
 The processed image, now focused on the numbers of the speed limit sign, is compared against a collection of template images representing various speed limits (e.g., 20, 30, 40, 50, 60, 70 mph). Using feature detection and matching algorithms (such as SIFT, ORB, etc.), the system identifies the template that most closely matches the extracted sign, thus determining the speed limit depicted on the sign.
 
-## Instructions to run the application
-
-### run imgcap.py
-- (Print off speed limit sign)
-- CTRL+C to stop the program
-
 ## Evidence of application working
 (Link to video)
 
-## Evaluation
-- Things to improve
-- Thresholding
+## Instructions to run the application
+- Follow the steps in the video linked above
+- run imgcap.py to run on your PC.
+- Plots should popup to demonstrate it is working, close to proceed the program
+- CTRL+C to interrupt and close the program
 
+
+## Evaluation - Things to improve
+- The system struggles with smaller signs that are further away. This is mainly because the kernal size is the same but on a smaller image, it looses a lot of the image detail. 
+- We attempted to implement distance calculation but didn't quiet achieve it largely because of the problem mentioned above meaning the range of distance the sign could be is quite narrow.
+- Colour and Shape Assumptions: The current system assumes that speed signs are red and of a as they are of a standard format as they are in the UK. Wouldn't be as effective with other formats of speed signs, for example in other countries.
+- Optimisation: The script current utilises and run 4 different feature matching methods for each of the 6 speed signs. This is computationally expensive especially if in a real-world application with a higher frame rate. 
 
 ## Personal Statements
-
 ### Thomas
 My main contribution to the final project outcome was implementing feature matching and Identification. Initially I tried to use template matching as all road signs are standardised but this wasn't suitable as the road signs are all at different angles, scales and different lighting conditions.
 Also early prototyping with sign extraction and trying to implement on a raspberry pi for portable testing. 
 
 ### Rory
-
+- Did everything else!
 
