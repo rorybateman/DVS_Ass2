@@ -18,14 +18,13 @@ Once a potential speed limit sign is extracted from the image, the system furthe
 The processed image, now focused on the numbers of the speed limit sign, is compared against a collection of template images representing various speed limits (e.g., 20, 30, 40, 50, 60, 70 mph). Using feature detection and matching algorithms (such as SIFT, ORB, etc.), the system identifies the template that most closely matches the extracted sign, thus determining the speed limit depicted on the sign.
 
 ## Evidence of application working
-(Link to video)
+(See video in the github)
 
 ## Instructions to run the application
-- Follow the steps in the video linked above
+- Follow the steps in the video
 - run imgcap.py to run on your PC.
 - Plots should popup to demonstrate it is working, close to proceed the program
 - CTRL+C to interrupt and close the program
-
 
 ## Evaluation - Things to improve
 - The system struggles with smaller signs that are further away. This is mainly because the kernal size is the same but on a smaller image, it looses a lot of the image detail. 
