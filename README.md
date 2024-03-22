@@ -16,6 +16,7 @@ Once a potential speed limit sign is extracted from the image, the system furthe
 
 ### Feature Matching and Identification
 The processed image, now focused on the numbers of the speed limit sign, is compared against a collection of template images representing various speed limits (e.g., 20, 30, 40, 50, 60, 70 mph). Using feature detection and matching algorithms (such as SIFT, ORB, etc.), the system identifies the template that most closely matches the extracted sign, thus determining the speed limit depicted on the sign.
+<img width="313" alt="image" src="https://github.com/rorybateman/DVS_Ass2/assets/70752417/eabeaa7c-9043-49e1-ad9b-29b0cc85da77">
 
 ## Evidence of application working
 (See video in the github)
