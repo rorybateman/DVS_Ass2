@@ -1,3 +1,7 @@
+# imgcap.py
+'''
+Main file to run the image capture and live recognition
+'''
 import os
 import time
 import cv2
