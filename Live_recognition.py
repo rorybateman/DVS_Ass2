@@ -15,7 +15,7 @@ def live(img_path):
     query_img = 0
     #img_path = 'captured_image.jpg'
 
-    templates = [20, 30, 40, 50, 60]
+    templates = [20, 30, 40, 50, 60,70]
     while type(query_img) == int:
         try:
             query_img = img_num(img_path)  # Image from which we want to match features
@@ -106,3 +106,6 @@ def live(img_path):
 
     # want to be able to input a speed limit sign and have the program output the speed limit that it corresponds to
 
+
+#img_path = 'plenty.png'
+#live(img_path)
