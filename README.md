@@ -9,7 +9,7 @@ System designed for real time recognition of speed limit signs using a camera.
 The system initiates by capturing a frames of live stills from a camera connected to the computer.
 
 ### Sign extraction
-For each captured frame, the system attempts to detect the presence of speed limit signs. This is accomplished through a series of image processing steps that filter the image to isolate red-colored regions. These steps involve color filtering, erosion, dilation, and other techniques to refine the image and focus on relevant details.
+For each captured frame, the system attempts to detect the presence of speed limit signs. This is accomplished through a series of image processing steps that filter the image to isolate red-colored regions. These steps involve color filtering, erosion, dilation, and other techniques to refine the image and focus on relevant details. After the extremity positions of red pixels are extracted to be used to then crop the original image and export only the necessery information( the actual sign) to the next stage.
 
 ### Sign Recognition
 Once a potential speed limit sign is extracted from the image, the system further processes the image to isolate the numbers on the sign, which indicate the speed limit. This involves additional image processing to remove background noise and enhance the visibility of the numbers.
