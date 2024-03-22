@@ -1,9 +1,15 @@
+# Live_recognition.py
 import cv2
 import numpy as np
 from skimage.metrics import structural_similarity as ssim
 import matplotlib.pyplot as plt
 from Image_extract import number_extract, img_num
 import pandas as pd
+
+''' 
+Performs feature matching to identify speed limit signs from a store of templates
+'''
+
 def live(img_path):
     #img_path = 'new test.png'
     query_img = 0
